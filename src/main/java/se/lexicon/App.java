@@ -57,12 +57,15 @@ public class App
     for (Person person : stockholmPeople) {
         System.out.println("Person in Stockholm: " + person);
     }
-        System.out.println("----- Using makeAction method to set all people as inactive -----");
+        System.out.println("----- Using makeAction method to send email to all people  -----");
         PersonAction sendEmail = person -> person.setName("Send email to " + person.getName());
         List<String> updatedPeople = makeAction(people, sendEmail);
         for (String person  : updatedPeople) {
             System.out.println("Updated Person: " + person);
         }
+
+
+
     }
 
 
