@@ -11,7 +11,9 @@ public class App
 {
     static App app = new App();
     private static PersonRule isActive = person -> person.isActive();
+    private static PersonRule inActive = person -> !person.isActive();
     private static PersonRule isAdult = person -> person.getAge() >= 18;
+    private static PersonRule isUnderage = person -> person.getAge() < 18;
     private static PersonRule livesInStockholm = person -> person.getCity().equalsIgnoreCase("Stockholm");
     public static void main( String[] args )
     {
@@ -63,8 +65,24 @@ public class App
         for (String person  : updatedPeople) {
             System.out.println("Updated Person: " + person);
         }
+        List<Person> activeAdult = filterPeople(people, isActive, isAdult);
+        System.out.println("----- Active Adults -----");
+        for (Person person : activeAdult) {
 
+            System.out.println("Active Adult: " + person);
+        }
+        List<Person> adultOrLivesInStockholm = filterPeopleByRule(people, isAdult, livesInStockholm);
+        System.out.println("----- Adults or Lives in Stockholm -----");
+        for (Person person : adultOrLivesInStockholm) {
+            System.out.println( person);
+        }
 
+        List<Person> inactiveOrUnderage = filterPeopleByRule(people, inActive, isUnderage);
+        System.out.println("----- Inactive or Underage -----");
+        for (Person person : inactiveOrUnderage) {
+            System.out.println(person);
+
+        }
 
     }
 
@@ -80,6 +98,30 @@ public class App
 
         return result;
     }
+
+    public static List<Person> filterPeople(List<Person> people, PersonRule rule, PersonRule anotherRule) {
+        List<Person> result = new ArrayList<>();
+
+        for (Person person : people) {
+            if(rule.test(person) && anotherRule.test(person)) {
+                result.add(person);
+            }
+        }
+
+        return result;
+    }
+    public static List<Person> filterPeopleByRule(List<Person> people, PersonRule rule, PersonRule anotherRule) {
+        List<Person> result = new ArrayList<>();
+
+        for (Person person : people) {
+            if(rule.test(person) || anotherRule.test(person)) {
+                result.add(person);
+            }
+        }
+
+        return result;
+    }
+
     public static List<String> makeAction(List<Person> people, PersonAction action) {
         List<String> result = new ArrayList<>();
 
