@@ -82,7 +82,7 @@ public class App
 
         for (Person person : people) {
             action.action(person);
-            result.add("Send email to " + person.getName());
+            result.add(person.getName());
         }
 
         return result;
