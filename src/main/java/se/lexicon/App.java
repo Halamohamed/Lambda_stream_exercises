@@ -10,9 +10,9 @@ import java.util.List;
 public class App 
 {
     static App app = new App();
-    PersonRule isActive = person -> person.isActive();
-    PersonRule isAdult = person -> person.getAge() >= 18;
-    PersonRule livesInStockholm = person -> person.getCity().equalsIgnoreCase("Stockholm");
+    private static PersonRule isActive = person -> person.isActive();
+    private static PersonRule isAdult = person -> person.getAge() >= 18;
+    private static PersonRule livesInStockholm = person -> person.getCity().equalsIgnoreCase("Stockholm");
     public static void main( String[] args )
     {
         List<Person> people = List.of(
@@ -43,30 +43,46 @@ public class App
         }
         System.out.println("----- Using filterPeople method -----");
         System.out.println("----- Using filterPeople method for Active People -----");
-        List<Person> activePeople = app.filterPeople(people, app.isActive);
+        List<Person> activePeople = filterPeople(people, isActive);
         for (Person person : activePeople) {
             System.out.println("Active Person: " + person);
         }
         System.out.println("----- Using filterPeople method for Adults -----");
-        List<Person> adultPeople = app.filterPeople(people, app.isAdult);
+        List<Person> adultPeople = filterPeople(people, isAdult);
         for (Person person : adultPeople) {
             System.out.println("Adult Person: " + person);
         }
         System.out.println("----- Using filterPeople method for People living in Stockholm -----");
-        List<Person> stockholmPeople = app.filterPeople(people, app.livesInStockholm);
+        List<Person> stockholmPeople = filterPeople(people, livesInStockholm);
     for (Person person : stockholmPeople) {
         System.out.println("Person in Stockholm: " + person);
     }
+        System.out.println("----- Using makeAction method to set all people as inactive -----");
+        PersonAction sendEmail = person -> person.setName("Send email to " + person.getName());
+        List<String> updatedPeople = makeAction(people, sendEmail);
+        for (String person  : updatedPeople) {
+            System.out.println("Updated Person: " + person);
+        }
     }
 
 
-    public List<Person> filterPeople(List<Person> people, PersonRule rule) {
+    public static List<Person> filterPeople(List<Person> people, PersonRule rule) {
         List<Person> result = new ArrayList<>();
 
         for (Person person : people) {
             if(rule.test(person)) {
                 result.add(person);
             }
+        }
+
+        return result;
+    }
+    public static List<String> makeAction(List<Person> people, PersonAction action) {
+        List<String> result = new ArrayList<>();
+
+        for (Person person : people) {
+            action.action(person);
+            result.add("Send email to " + person.getName());
         }
 
         return result;
