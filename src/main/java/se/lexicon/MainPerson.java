@@ -50,6 +50,40 @@ public class MainPerson {
         System.out.println("----- First Active Person -----");
         firstActivePerson.ifPresent(System.out::println);
 
+        System.out.println("------Multiple filters: Active Adults -------");
+        processor.findPeople(people,
+                person -> person.isActive() && person.getAge() >= 18)
+                .forEach(System.out::println);
+
+        System.out.println("------ Active people in Stockholm -------");
+        processor.findPeople(people,
+                person -> person.isActive() && person.getCity().equalsIgnoreCase("Stockholm"))
+                .forEach(System.out::println);
+
+        System.out.println("------ Inactive people older than 30 -------");
+        processor.findPeople(people,
+                person -> !person.isActive() && person.getAge() > 30)
+                .forEach(System.out::println);
+
+        System.out.println("--------Sorted List of unique cities--------");
+        people.stream().map(Person::getCity).distinct().sorted().forEach(System.out::println);
+
+        System.out.println("--------Sorted List of unique first letters of names ------");
+        people.stream().map(person -> person.getName().substring(0,1)).distinct()
+                .sorted().forEach(System.out::println);
+
+        System.out.println("-------- Mapping and Formating ---------");
+        System.out.println("------ List of People with formatted string -------");
+        people.stream()
+                .map(person -> String.format("Name: %s, Age: %d, City: %s, Active: %b",
+                        person.getName(), person.getAge(), person.getCity(), person.isActive()))
+                .forEach(System.out::println);
+
+        System.out.println("------ List of Email addresses -------");
+        people.stream()
+                .map(person -> person.getName().toLowerCase() + "@example.com")
+                .forEach(System.out::println);
+
 
     }
 }
