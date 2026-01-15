@@ -25,24 +25,32 @@ public class App
                 new Person("Lina", 41, "Malmö", false),
                 new Person("Omar", 19, "Stockholm", true)
         );
+        PersonProcessor processor = new PersonProcessor();
+
         System.out.println("----- Active People -----");
-        for (Person person : people) {
+        /*for (Person person : people) {
             if(person.isActive()) {
                 System.out.println("Person: " + person);
             }
-        }
+        }*/
+        processor.findPeople(people, isActive).forEach(person -> System.out.println(person));
+
         System.out.println("----- Adults -----");
-        for (Person person : people) {
+        /*for (Person person : people) {
             if(person.getAge() >= 18) {
                 System.out.println("Person: " + person);
             }
-        }
+        }*/
+        processor.findPeople(people, isAdult).forEach(person -> System.out.println(person));
+
         System.out.println("----- People living in Stockholm -----");
-        for (Person person : people) {
+        /*for (Person person : people) {
             if(person.getCity().equalsIgnoreCase("Stockholm")) {
                 System.out.println("Person: " + person);
             }
-        }
+        }*/
+        processor.findPeople(people, livesInStockholm).forEach(person -> System.out.println(person));
+
         System.out.println("----- Using filterPeople method -----");
         System.out.println("----- Using filterPeople method for Active People -----");
         List<Person> activePeople = filterPeople(people, isActive);
